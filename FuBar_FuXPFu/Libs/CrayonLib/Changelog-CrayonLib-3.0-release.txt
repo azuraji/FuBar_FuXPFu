@@ -1,0 +1,283 @@
+------------------------------------------------------------------------
+r63 | nevcairiel | 2009-01-27 12:50:03 +0000 (Tue, 27 Jan 2009) | 1 line
+Changed paths:
+   A /tags/3.0-release (from /trunk:62)
+
+Tagging as 3.0-release
+------------------------------------------------------------------------
+r62 | nevcairiel | 2009-01-27 12:49:47 +0000 (Tue, 27 Jan 2009) | 1 line
+Changed paths:
+   M /trunk/CrayonLib.toc
+
+CrayonLib: Update toc
+------------------------------------------------------------------------
+r61 | nevcairiel | 2008-10-09 21:51:16 +0000 (Thu, 09 Oct 2008) | 1 line
+Changed paths:
+   M /trunk/Crayon-2.0/Crayon-2.0.lua
+
+WoWAce Post-Processing: Virtually inflate Library Revision numbers for proper upgrade path
+------------------------------------------------------------------------
+r60 | root | 2008-09-30 14:47:20 +0000 (Tue, 30 Sep 2008) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+
+Hopefully fix .pkgmeta
+------------------------------------------------------------------------
+r59 | root | 2008-09-29 21:27:12 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   M /trunk
+   A /trunk/.pkgmeta
+
+Facilitate WowAce-on-CurseForge transition
+------------------------------------------------------------------------
+r57 | root | 2008-09-29 20:57:47 +0000 (Mon, 29 Sep 2008) | 1 line
+Changed paths:
+   D /tmp/trunk/CrayonLib
+   A /trunk (from /tmp/trunk/CrayonLib:56)
+
+Importing old repo data under /trunk
+------------------------------------------------------------------------
+r53 | rabbit | 2008-03-26 11:55:28 +0000 (Wed, 26 Mar 2008) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.Some bumps.
+------------------------------------------------------------------------
+r51 | funkydude | 2007-11-13 17:19:46 +0000 (Tue, 13 Nov 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.trunk: Bump toc for various addons and libraries working on the PTR
+------------------------------------------------------------------------
+r50 | ackis | 2007-10-22 13:23:08 +0000 (Mon, 22 Oct 2007) | 2 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+CrayonLib:
+- Added blue and black
+------------------------------------------------------------------------
+r49 | funkydude | 2007-09-25 16:20:41 +0000 (Tue, 25 Sep 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.trunk: various toc updates of ptr working addons
+------------------------------------------------------------------------
+r48 | funkydude | 2007-06-22 01:39:51 +0000 (Fri, 22 Jun 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+   A /tmp/trunk/CrayonLib/embeds.xml
+
+CrayonLib: use embeds.xml
+------------------------------------------------------------------------
+r47 | funkydude | 2007-05-22 02:50:44 +0000 (Tue, 22 May 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+CrayonLib: toc > 20100
+------------------------------------------------------------------------
+r46 | ckknight | 2007-04-07 00:53:20 +0000 (Sat, 07 Apr 2007) | 3 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.Updated all libraries in !!!StandaloneLibraries to start their title with "Lib:" This should make dealing with Blizzard's addon enabler thingy much easier. At least for me.
+Hopefully nothing breaks. *thumbs up*
+
+------------------------------------------------------------------------
+r45 | kergoth | 2007-01-30 00:14:59 +0000 (Tue, 30 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.Line ending fixups in .toc files (they werent in my .subversion/config autoprops)
+------------------------------------------------------------------------
+r44 | kergoth | 2007-01-23 21:50:43 +0000 (Tue, 23 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+   M /tmp/trunk/CrayonLib/LICENSE.txt
+
+.Line ending fixups: trunk/
+------------------------------------------------------------------------
+r43 | funkydude | 2007-01-10 09:04:06 +0000 (Wed, 10 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+CrayonLib: toc 20003
+------------------------------------------------------------------------
+r42 | funkydude | 2007-01-05 18:02:54 +0000 (Fri, 05 Jan 2007) | 1 line
+Changed paths:
+   D /tmp/trunk/CrayonLib/Lib
+
+CrayonLib: removed 1.0(tagged)
+------------------------------------------------------------------------
+r41 | TheKarn | 2007-01-04 01:03:34 +0000 (Thu, 04 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+   M /tmp/trunk/CrayonLib/LICENSE.txt
+
+CrayonLib: Added RGBtoHSL, HSLtoRGB and RotateRGBHue functions to Crayon.
+------------------------------------------------------------------------
+r40 | ckknight | 2007-01-03 13:37:25 +0000 (Wed, 03 Jan 2007) | 1 line
+Changed paths:
+   A /tmp/trunk/CrayonLib/LICENSE.txt
+
+.ckknight's assorted libraries/addons - added LICENSE.txt files to folders that state the license used.
+------------------------------------------------------------------------
+r39 | ckknight | 2007-01-03 12:30:19 +0000 (Wed, 03 Jan 2007) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+.Crayon-2.0 - changing license to LGPL v2.1. If you have code within this library that you do not want to be under this license, contact me to work out a solution.
+------------------------------------------------------------------------
+r36 | ckknight | 2006-12-13 06:35:55 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+.Crayon-2.0 - streamlined percentage-checking algorithm
+------------------------------------------------------------------------
+r35 | ckknight | 2006-12-13 06:28:21 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+.Crayon-2.0 - whoopsie doodle.
+------------------------------------------------------------------------
+r34 | ckknight | 2006-12-13 06:24:53 +0000 (Wed, 13 Dec 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+.Crayon-2.0 - bugfixing
+------------------------------------------------------------------------
+r33 | ckknight | 2006-12-13 03:45:44 +0000 (Wed, 13 Dec 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+.Crayon-2.0 - changed :GetThresholdColor(quality, worst, worse, normal, better, best) to :GetThresholdColor(quality, ...)
+changed :GetThresholdColorTrivial(quality, worst, worse, normal, better, best) to :GetThresholdColorTrivial(quality, ...)
+------------------------------------------------------------------------
+r32 | ckknight | 2006-11-29 14:12:30 +0000 (Wed, 29 Nov 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+CrayonLib - updated TOC to 20000. (still works in WoW 1.12)
+------------------------------------------------------------------------
+r31 | ckknight | 2006-10-23 01:21:20 +0000 (Mon, 23 Oct 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+.Crayon-1.0 - deprecating for WoW 2.0
+------------------------------------------------------------------------
+r30 | mjc | 2006-10-18 16:08:49 +0000 (Wed, 18 Oct 2006) | 4 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+TouristLib, CompostLib, Metrognome, SpecialEventsEmbed, SpellCacheLib, AbacusLib, GratuityLib, RosterLib, PaintChipsLib, BabbleLib, CandyBar, ParserLib, JostleLib, DewdropLib, TabletLib, CrayonLib, ItemClassLib, Deformat:
+
+Mass toc update for new "X-AceLibrary" loading system.
+
+------------------------------------------------------------------------
+r29 | tekkub | 2006-10-12 03:03:42 +0000 (Thu, 12 Oct 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+CrayonLib - Now LoD
+------------------------------------------------------------------------
+r28 | kebinusan | 2006-10-01 17:49:26 +0000 (Sun, 01 Oct 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib
+
+C Externals cleanups
+------------------------------------------------------------------------
+r27 | kergoth | 2006-09-30 23:02:03 +0000 (Sat, 30 Sep 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+Sigh.. more reversions.
+
+~lart svk for not merging when told to
+------------------------------------------------------------------------
+r26 | kergoth | 2006-09-30 22:32:01 +0000 (Sat, 30 Sep 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+Continuing the adjustment to use svn:eol-style of native on files to avoid line ending issues.
+------------------------------------------------------------------------
+r25 | nevcairiel | 2006-09-26 16:28:54 +0000 (Tue, 26 Sep 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib
+
+Externals: The C - you know i never heard 90% of those addons names before?
+------------------------------------------------------------------------
+r24 | tekkub | 2006-09-20 20:32:45 +0000 (Wed, 20 Sep 2006) | 2 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+CrayonLib
+- TOC Updates
+------------------------------------------------------------------------
+r20 | theondry | 2006-08-10 21:54:43 +0000 (Thu, 10 Aug 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+Added Purple
+------------------------------------------------------------------------
+r19 | theondry | 2006-08-10 21:52:18 +0000 (Thu, 10 Aug 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+Added 'Warlock' Purple
+------------------------------------------------------------------------
+r16 | ckknight | 2006-07-03 04:31:18 +0000 (Mon, 03 Jul 2006) | 3 lines
+Changed paths:
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+
+my libs - assorted fixes
+http://www.wowinterface.com/portal.php?id=10&a=my
+
+------------------------------------------------------------------------
+r15 | ckknight | 2006-07-02 21:45:16 +0000 (Sun, 02 Jul 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+
+Crayon - fix major/minor versions
+------------------------------------------------------------------------
+r14 | ckknight | 2006-07-02 20:23:58 +0000 (Sun, 02 Jul 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib
+   D /tmp/trunk/CrayonLib/API.html
+   A /tmp/trunk/CrayonLib/Crayon-2.0
+   A /tmp/trunk/CrayonLib/Crayon-2.0/Crayon-2.0.lua
+   M /tmp/trunk/CrayonLib/CrayonLib.toc
+   D /tmp/trunk/CrayonLib/README.txt
+
+CrayonLib - upgraded to Ace2.
+------------------------------------------------------------------------
+r11 | ckknight | 2006-06-06 23:37:37 +0000 (Tue, 06 Jun 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+CrayonLib - fixed typo
+------------------------------------------------------------------------
+r10 | ckknight | 2006-06-06 23:36:36 +0000 (Tue, 06 Jun 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+CrayonLib - updated argument checking
+------------------------------------------------------------------------
+r9 | ckknight | 2006-06-06 22:20:45 +0000 (Tue, 06 Jun 2006) | 1 line
+Changed paths:
+   M /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+
+CrayonLib - added argument checking
+------------------------------------------------------------------------
+r8 | ckknight | 2006-05-17 22:05:00 +0000 (Wed, 17 May 2006) | 1 line
+Changed paths:
+   A /tmp/trunk/CrayonLib
+   A /tmp/trunk/CrayonLib/API.html
+   A /tmp/trunk/CrayonLib/CrayonLib.toc
+   A /tmp/trunk/CrayonLib/Lib
+   A /tmp/trunk/CrayonLib/Lib/CrayonLib.lua
+   A /tmp/trunk/CrayonLib/README.txt
+
+CrayonLib - initial commit.
+------------------------------------------------------------------------
