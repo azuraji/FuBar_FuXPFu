@@ -691,10 +691,12 @@ end
 function FuXP:OnTextUpdate()
 	FuXP:OnDataUpdate()
 	-- Setup watched factions
-    if self.db.profile.ShowText == "Rep" and self.db.profile.Faction ~= 0 then
+	if self.db.profile.ShowText == "Rep" and self.db.profile.Faction ~= 0 then
+		local name, standing, minRep, maxRep, currentRep, factionID = GetWatchedFactionInfo()
+		if standing <= 0 then return end -- 'Unknown' usually means that the player just started their character and aren't tracking any faction
+
 		local max, xp = UnitXPMax("player"), UnitXP("player")
 		local toGo = max - xp
-		local name, standing, minRep, maxRep, currentRep, factionID = GetWatchedFactionInfo()
 
 		-- Paragon Reputation introduced in Legion:
 		-- https://wow.gamepedia.com/Reputation#Paragon
@@ -742,22 +744,22 @@ function FuXP:OnTextUpdate()
 				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s) // XP: %s%%/%s to go"], name, ((currentRep-minRep)/(maxRep-minRep))*100 , currentRep-minRep, maxRep-minRep, factionStandingLabel.."|r", math.floor(xp/max * 100), toGo))
 			end
 		end
-    elseif self.db.profile.ShowText == "XP" then
-        local max, xp = UnitXPMax("player"), UnitXP("player")
-        local toGo = max - xp
-        local percentToGo = math.floor(toGo / max * 100)
-        if crayon then
-            toGo = "|cff"..crayon:GetThresholdHexColor(toGo, 0) .. toGo .. "|r"
-            percentToGo = "|cff"..crayon:GetThresholdHexColor(percentToGo) .. percentToGo .. "|r"
-        end
-        if self.db.profile.ToGo then
-            self:SetText(string.format("%s (%s%%)", toGo, percentToGo))
-        else 
-            self:SetText(string.format("%s/%s (%s%%)", xp, max, math.floor(xp/max * 100)))
-        end
-    else
-        self:SetText("FuXPFu")
-    end
+	elseif self.db.profile.ShowText == "XP" then
+			local max, xp = UnitXPMax("player"), UnitXP("player")
+			local toGo = max - xp
+			local percentToGo = math.floor(toGo / max * 100)
+			if crayon then
+					toGo = "|cff"..crayon:GetThresholdHexColor(toGo, 0) .. toGo .. "|r"
+					percentToGo = "|cff"..crayon:GetThresholdHexColor(percentToGo) .. percentToGo .. "|r"
+			end
+			if self.db.profile.ToGo then
+					self:SetText(string.format("%s (%s%%)", toGo, percentToGo))
+			else 
+					self:SetText(string.format("%s/%s (%s%%)", xp, max, math.floor(xp/max * 100)))
+			end
+	else
+			self:SetText("FuXPFu")
+	end
 end
 
 function FuXP:OnTooltipUpdate()
