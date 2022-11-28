@@ -4,7 +4,7 @@
 ## Notes: Lightweight XP Bar
 ## Notes-zhCN: 迷你经验条
 ## Notes-zhTW: 輕量級的經驗值條模組。
-## Version: 10.0.2.3
+## Version: 10.0.2.4
 ## Author: Wobin
 ## eMail: wobster@gmail.com
 ## X-Credits: Bant (For the design)

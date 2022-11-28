@@ -254,7 +254,7 @@ function FuXP:SetupMenu()
 			get = function() return FuXP.db.profile.ShowText end,
 			set = function(show)
 					FuXP.db.profile.ShowText = show;
-                    FuXP:OnTextUpdate();
+          FuXP:OnTextUpdate();
 				end,
 			validate = { ["XP"] = L["XP"], ["Rep"] = L["Rep"], ["None"] = L["None"] },
 			order = 122
@@ -276,7 +276,7 @@ end
 
 	FuXP.hasIcon = true
 	FuXP.cannotDetachTooltip = true
-	FuXP.defaultPosition = "LEFT"
+	FuXP.defaultPosition = "CENTER"
 	FuXP.hideWithoutStandby = true
 	FuXP.cannotAttachToMinimap = true
 	FuXP.independentProfile = true
@@ -412,23 +412,15 @@ end
 function FuXP:OnEnable()
 	self:RegisterBucketEvent("UPDATE_EXHAUSTION", 60, "Update")
     self:RegisterEvent("PLAYER_UPDATE_RESTING", "CheckIcon")
-	self:RegisterEvent("PLAYER_LEVEL_UP", "OnLevelUp")
+	-- self:RegisterEvent("PLAYER_LEVEL_UP", "OnLevelUp")
 	self:RegisterEvent("PLAYER_XP_UPDATE", "OnTextUpdate")
 
-	--self:RegisterBucketEvent("UPDATE_FACTION", 5, "Update")
-	--self:RegisterEvent("UPDATE_FACTION", "OnTextUpdate")
-
-	-- self:RegisterEvent("CHAT_MSG_COMBAT_FACTION_CHANGE", "OnTextUpdate")
 	self:RegisterEvent("UPDATE_FACTION", "OnTextUpdate")
-	-- self:RegisterEvent("FuBar_ChangedPanels")
-	-- self:RegisterEvent("tekAutoRep_NewFaction", "UpdateInABit")
 	self:SecureHook("SetWatchedFactionIndex", "UpdateInABit");
 	self:ScheduleRepeatingEvent("XPFuBar", self.Reanchor, 1, self)
 	self:ScheduleRepeatingEvent("XPFuRep", self.GetRep, 3, self)
+
 	self:SetupMenu()
-	-- MainMenuExpBar:Hide()
-	-- ReputationWatchBar:Hide()
-	-- ExhaustionTick:Hide()
 end
 function FuXP:GetRep()
 	if not self.FactionTable or #self.FactionTable == 0 then
@@ -556,7 +548,12 @@ function FuXP:Reanchor()
 	if self.db.profile.ShowRep then
 		if self.db.profile.ShowXP then
 			self.RepBar:SetParent(self.FuPanel.frame)
-			self.RepBar:SetPoint(point, self.FuPanel.frame, relpoint, 0, y * self.XPBar:GetHeight())
+
+			if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
+				self.RepBar:SetPoint(point, self.FuPanel.frame, relpoint, 0, y * self.XPBar:GetHeight())
+			else
+				self.RepBar:SetPoint(point, self.FuPanel.frame, relpoint, 0, y * self.XPBar:GetHeight() - 2)
+			end
 		else
 			self.RepBar:SetParent(self.FuPanel.frame)
 			self.RepBar:SetPoint(point, self.FuPanel.frame, relpoint, 0, 0)
@@ -651,14 +648,12 @@ function FuXP:OnDataUpdate()
 		self.NoRep:SetWidth(((maxRep - currentRep)/(maxRep - minRep))*total)
 	end
 	
-	self.XPBar:SetWidth(0)
-	self.RestedXP:SetWidth(0)
-	self.NoXP:SetWidth(0)
-	self.Border:SetWidth(0)
+	self.XPBar:Hide()
+	self.RestedXP:Hide()
+	self.NoXP:Hide()
+	self.Border:Hide()
+
 	if self.db.profile.ShowXP == true and UnitLevel("player") ~= MAX_PLAYER_LEVEL then
-		--if UnitLevel("player") == MAX_PLAYER_LEVEL then
-			--self.NoXP:SetWidth(total)
-		--end
 		local currentXP = UnitXP("player")
 		local maxXP = UnitXPMax("player")
 		local restXP = GetXPExhaustion() or 0
@@ -668,25 +663,30 @@ function FuXP:OnDataUpdate()
 			remainXP = 0
 		end
 
-		self.XPBar:SetWidth((currentXP/maxXP)*total)
-		if (restXP + currentXP)/maxXP > 1 then
+		self.XPBar:SetWidth((currentXP / maxXP) * total)
+		if (restXP + currentXP) / maxXP > 1 then
 			self.RestedXP:SetWidth(total - self.XPBar:GetWidth())
 		else
-			self.RestedXP:SetWidth((restXP/maxXP)*total + 0.001)
+			self.RestedXP:SetWidth((restXP / maxXP) * total + 0.001)
 		end
-		self.NoXP:SetWidth((remainXP/maxXP)*total)
+		self.NoXP:SetWidth((remainXP / maxXP) * total)
+
+		self.XPBar:Show()
+		self.RestedXP:Show()
+		self.NoXP:Show()
+		self.Border:Show()
 	end
 end
 
-function FuXP:OnLevelUp(newLevel)
-	if self.db.profile.ShowXP == true and newLevel == MAX_PLAYER_LEVEL then
-		self.XPBar:Hide()
-		self.Spark:Hide()
-		self.Spark2:Hide()
-		self.RestedXP:Hide()
-		self.NoXP:Hide()
-	end
-end
+-- function FuXP:OnLevelUp(newLevel)
+-- 	if self.db.profile.ShowXP == true and newLevel == MAX_PLAYER_LEVEL then
+-- 		self.XPBar:Hide()
+-- 		self.Spark:Hide()
+-- 		self.Spark2:Hide()
+-- 		self.RestedXP:Hide()
+-- 		self.NoXP:Hide()
+-- 	end
+-- end
 
 function FuXP:OnTextUpdate()
 	FuXP:OnDataUpdate()
