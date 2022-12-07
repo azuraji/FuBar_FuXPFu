@@ -265,7 +265,8 @@ end})
 
 local headerSize, normalSize
 if GameTooltipHeaderText then
-	headerSize = select(2,GameTooltipHeaderText:GetFont())
+	-- headerSize = select(2,GameTooltipHeaderText:GetFont())
+	headerSize = 5
 else
 	headerSize = 14
 end
@@ -434,7 +435,7 @@ do
 	TabletData.SetHint = wrap(TabletData.SetHint, "TabletData:SetHint")
 	
 	function TabletData:SetTitle(title)
-		self.title = nil
+		self.title = title or "Title"
 	end
 	TabletData.SetTitle = wrap(TabletData.SetTitle, "TabletData:SetTitle")
 	
@@ -786,6 +787,7 @@ do
 		end
 
 		local fontSizePercent = category.tabletData.tablet.fontSizePercent
+
 		local w = 0
 		self.checkWidth = 0
 		testString = category.tabletData.tablet.buttons[1].col1
@@ -1160,7 +1162,8 @@ local function AcquireFrame(self, registration, data, detachedData)
 		tooltip.data = data
 		tooltip.detachedData = detachedData
 		local fontSizePercent = tooltip.data and tooltip.data.fontSizePercent or 1
-		local transparency = tooltip.data and tooltip.data.transparency or 0.75
+		--local fontSizePercent = 1
+		local transparency = tooltip.data and tooltip.data.transparency or 0.8
 		local r = tooltip.data and tooltip.data.r or 0
 		local g = tooltip.data and tooltip.data.g or 0
 		local b = tooltip.data and tooltip.data.b or 0
@@ -1174,7 +1177,7 @@ local function AcquireFrame(self, registration, data, detachedData)
 			frame:SetFrameLevel(12)
 		end
 	else
-		tooltip = CreateFrame("Frame", "Tablet20Frame", UIParent)
+		tooltip = CreateFrame("Frame", "Tablet20Frame", UIParent, "BackdropTemplate")
 		tooltip:SetParent(GetMainFrame())
 		self.tooltip = tooltip
 		tooltip.data = data
@@ -1190,10 +1193,10 @@ local function AcquireFrame(self, registration, data, detachedData)
 			'tileSize', 16,
 			'edgeSize', 16,
 			'insets', new(
-				'left', 5,
-				'right', 5,
-				'top', 5,
-				'bottom', 5
+				'left', 3,
+				'right', 3,
+				'top', 3,
+				'bottom', 3
 			)
 		)
 		tooltip:SetBackdrop(backdrop)
@@ -1253,7 +1256,7 @@ local function AcquireFrame(self, registration, data, detachedData)
 		scrollFrame:SetPoint("BOTTOMRIGHT", -5, 5)
 		scrollChild:SetWidth(1)
 		scrollChild:SetHeight(1)
-		local slider = CreateFrame("Slider", "Tablet20FrameSlider", scrollFrame)
+		local slider = CreateFrame("Slider", "Tablet20FrameSlider", scrollFrame, "BackdropTemplate")
 		tooltip.slider = slider
 		slider:SetOrientation("VERTICAL")
 		slider:SetMinMaxValues(0, 1)
@@ -1397,7 +1400,12 @@ local function AcquireFrame(self, registration, data, detachedData)
 				val = 0
 			end
 			self.scrollFrame:SetVerticalScroll(val)
-			self.slider:SetValue(val / max)
+ -- TODO: In Dragonflight both values are 0?
+			if max > 0 then
+        self.slider:SetValue(val / max)
+      else
+        self.slider:SetValue(0)
+      end
 		end
 		tooltip.Show = wrap(tooltip.Show, "tooltip:Show")
 		
@@ -1996,7 +2004,7 @@ function AcquireDetachedFrame(self, registration, data, detachedData)
 	if not tooltip then
 		AcquireFrame(self, {})
 	end
-	local detached = CreateFrame("Frame", "Tablet20DetachedFrame" .. (#detachedTooltips + 1), GetMainFrame())
+	local detached = CreateFrame("Frame", "Tablet20DetachedFrame" .. (#detachedTooltips + 1), GetMainFrame(), "BackdropTemplate")
 	detachedTooltips[#detachedTooltips+1] = detached
 	detached.notInUse = true
 	detached:EnableMouse(not data.locked)
@@ -2009,7 +2017,7 @@ function AcquireDetachedFrame(self, registration, data, detachedData)
 	detached.fontSizePercent = 1
 	detached.maxLines = 0
 	detached.buttons = {}
-	detached.transparency = 0.75
+	detached.transparency = 1
 	detached.r = 0
 	detached.g = 0
 	detached.b = 0
@@ -2021,10 +2029,10 @@ function AcquireDetachedFrame(self, registration, data, detachedData)
 		'tileSize', 16,
 		'edgeSize', 16,
 		'insets', tmp.b(
-			'left', 5,
-			'right', 5,
-			'top', 5,
-			'bottom', 5
+			'left', 3,
+			'right', 3,
+			'top', 3,
+			'bottom', 3
 		)
 	))
 	detached.locked = detachedData.locked
@@ -2045,8 +2053,8 @@ function AcquireDetachedFrame(self, registration, data, detachedData)
 	detached:SetScript("OnDragStop", function(this)
 		detached:StopMovingOrSizing()
 		detached.moving = nil
-		detached:SetClampedToScreen(1)
-		detached:SetClampedToScreen(nil)
+		detached:SetClampedToScreen(true)
+		detached:SetClampedToScreen(false)
 		local anchor
 		local offsetx
 		local offsety
@@ -2236,7 +2244,7 @@ function AcquireDetachedFrame(self, registration, data, detachedData)
 	scrollFrame:SetPoint("BOTTOMRIGHT", -5, 5)
 	scrollChild:SetWidth(1)
 	scrollChild:SetHeight(1)
-	local slider = CreateFrame("Slider", detached:GetName() .. "Slider", scrollFrame)
+	local slider = CreateFrame("Slider", detached:GetName() .. "Slider", scrollFrame, "BackdropTemplate")
 	detached.slider = slider
 	slider:SetOrientation("VERTICAL")
 	slider:SetMinMaxValues(0, 1)
@@ -2436,8 +2444,8 @@ function Tablet:Open(fakeParent, parent)
 	end
 	local offsetx = 0
 	local offsety = 0
-	frame:SetClampedToScreen(1)
-	frame:SetClampedToScreen(nil)
+	frame:SetClampedToScreen(true)
+	frame:SetClampedToScreen(false)
 	if frame:GetBottom() and frame:GetLeft() then
 		if frame:GetRight() > GetScreenWidth() then
 			offsetx = frame:GetRight() - GetScreenWidth()
@@ -2555,16 +2563,18 @@ function Tablet:Register(parent, ...)
 				if script then
 					script(...)
 				end
-				if self.registry[parent] and self.registry[parent].tooltip and self.registry[parent].tooltip == self.tooltip then
-					self.tooltip:Hide()
-				end
+				-- Prevent Tablet from closing on parent mousedown
+
+				-- if self.registry[parent] and self.registry[parent].tooltip and self.registry[parent].tooltip == self.tooltip then
+				-- 	self.tooltip:Hide()
+				-- end
 			end)
 		end
 		if parent:HasScript("OnMouseWheel") then
 			local script = parent:GetScript("OnMouseWheel")
-			parent:SetScript("OnMouseWheel", function(...)
+			parent:SetScript("OnMouseWheel", function(this, arg1)
 				if script then
-					script(...)
+					script(this, arg1)
 				end
 				if self.registry[parent] and self.registry[parent].tooltip then
 					self.registry[parent].tooltip:Scroll(arg1 < 0)

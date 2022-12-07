@@ -2563,9 +2563,11 @@ function Tablet:Register(parent, ...)
 				if script then
 					script(...)
 				end
-				if self.registry[parent] and self.registry[parent].tooltip and self.registry[parent].tooltip == self.tooltip then
-					self.tooltip:Hide()
-				end
+				-- Prevent Tablet from closing on parent mousedown
+
+				-- if self.registry[parent] and self.registry[parent].tooltip and self.registry[parent].tooltip == self.tooltip then
+				-- 	self.tooltip:Hide()
+				-- end
 			end)
 		end
 		if parent:HasScript("OnMouseWheel") then

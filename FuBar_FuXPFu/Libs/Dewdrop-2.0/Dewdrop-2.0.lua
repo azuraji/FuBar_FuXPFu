@@ -882,7 +882,7 @@ local function AcquireLevel(self, level)
 			end
 			frame:EnableMouse(true)
 			frame:EnableMouseWheel(true)
-			local backdrop = CreateFrame("Frame", nil, frame)
+			local backdrop = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 			backdrop:SetAllPoints(frame)
 			backdrop:SetBackdrop(tmp(
 				'bgFile', "Interface\\Tooltips\\UI-Tooltip-Background",
@@ -1921,7 +1921,7 @@ end
 
 function OpenSlider(self, parent)
 	if not sliderFrame then
-		sliderFrame = CreateFrame("Frame", nil, nil)
+		sliderFrame = CreateFrame("Frame", nil, nil, "BackdropTemplate")
 		sliderFrame:SetWidth(100)
 		sliderFrame:SetHeight(170)
 		sliderFrame:SetScale(UIParent:GetScale())
@@ -1946,9 +1946,8 @@ function OpenSlider(self, parent)
 		sliderFrame:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b)
 		sliderFrame:EnableMouse(true)
 		sliderFrame:EnableMouseWheel(true)
-		sliderFrame:Hide()
 		sliderFrame:SetPoint("CENTER", UIParent, "CENTER")
-		local slider = CreateFrame("Slider", nil, sliderFrame)
+		local slider = CreateFrame("Slider", nil, sliderFrame, "BackdropTemplate")
 		sliderFrame.slider = slider
 		slider:SetOrientation("VERTICAL")
 		slider:SetMinMaxValues(0, 1)
@@ -2277,7 +2276,6 @@ function OpenSlider(self, parent)
 		end
 	end
 
-
 	sliderFrame.lastValue = parent.sliderValue
 
 	local level = parent.level
@@ -2344,7 +2342,7 @@ end
 
 function OpenEditBox(self, parent)
 	if not editBoxFrame then
-		editBoxFrame = CreateFrame("Frame", nil, nil)
+		editBoxFrame = CreateFrame("Frame", nil, nil, "BackdropTemplate")
 		editBoxFrame:SetWidth(200)
 		editBoxFrame:SetHeight(40)
 		editBoxFrame:SetScale(UIParent:GetScale())

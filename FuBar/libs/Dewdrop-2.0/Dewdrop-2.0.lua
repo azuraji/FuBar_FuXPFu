@@ -1946,7 +1946,6 @@ function OpenSlider(self, parent)
 		sliderFrame:SetBackdropColor(TOOLTIP_DEFAULT_BACKGROUND_COLOR.r, TOOLTIP_DEFAULT_BACKGROUND_COLOR.g, TOOLTIP_DEFAULT_BACKGROUND_COLOR.b)
 		sliderFrame:EnableMouse(true)
 		sliderFrame:EnableMouseWheel(true)
-		sliderFrame:Hide()
 		sliderFrame:SetPoint("CENTER", UIParent, "CENTER")
 		local slider = CreateFrame("Slider", nil, sliderFrame, "BackdropTemplate")
 		sliderFrame.slider = slider
@@ -2276,7 +2275,6 @@ function OpenSlider(self, parent)
 			sliderFrame.currentText:SetText(string.format("%.0f", parent.sliderValue))
 		end
 	end
-
 
 	sliderFrame.lastValue = parent.sliderValue
 

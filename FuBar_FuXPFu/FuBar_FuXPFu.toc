@@ -4,14 +4,13 @@
 ## Notes: Lightweight XP Bar
 ## Notes-zhCN: 迷你经验条
 ## Notes-zhTW: 輕量級的經驗值條模組。
-## Version: 10.0.2.4
-## Author: Wobin
+## Version: 10.0.2.5
+## Author: Wobin, azuraji
 ## eMail: wobster@gmail.com
 ## X-Credits: Bant (For the design)
 ## X-Category: Interface Enhancements
-## X-WoWIPortal: wobin
 ## Dependencies: FuBar
-## OptionalDeps: Ace2, DewdropLib, TabletLib, FuBarPlugin-2.0, JostleLib, CrayonLib, FuBar, FuBar_Factions, tekAutoRep
+## OptionalDeps: Ace2, DewdropLib, TabletLib, FuBarPlugin-2.0, JostleLib, CrayonLib, FuBar
 ## SavedVariables: FuXPDB
 
 ## X-Embeds: Ace2, Dewdrop-2.0, Tablet-2.0, FuBarPlugin-2.0
