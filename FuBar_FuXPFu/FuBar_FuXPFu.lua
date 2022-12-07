@@ -101,8 +101,9 @@ function FuXP:UpdateFactionMenu()
 		local watchedFactionID = select(6, GetWatchedFactionInfo())
 
 		for factionIndex = 1, GetNumFactions() do
-			local name, _, _, _, _, _, _, _, isHeader, _, _, _, _, factionID  = GetFactionInfo(factionIndex)
-			if not isHeader then
+			local name, _, _, _, _, _, _, _, isHeader, _, hasRep, _, _, factionID  = GetFactionInfo(factionIndex)
+
+			if not isHeader or hasRep then
 				if watchedFactionID == factionID then
 					watchedFactionIndex = tostring(factionIndex)
 				end
