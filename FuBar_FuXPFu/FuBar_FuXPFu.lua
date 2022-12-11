@@ -402,6 +402,7 @@ function FuXP:OnEnable()
 	self:RegisterBucketEvent("UPDATE_EXHAUSTION", 60, "Update")
 
 	self:RegisterEvent("PLAYER_XP_UPDATE", "OnTextUpdate")
+	self:RegisterEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "OnTextUpdate")
 	self:RegisterEvent("UPDATE_FACTION", "OnUpdateFaction")
 	
 	self:SecureHook("SetWatchedFactionIndex");
