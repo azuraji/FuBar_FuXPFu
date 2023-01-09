@@ -587,7 +587,7 @@ end
 
 function FuXP:ShowBar()
 	self:HideBar()	
-	if self.db.profile.ShowXP == true then
+	if self.db.profile.ShowXP == true and not UnitLevel("player") == MAX_PLAYER_LEVEL then
 		self.XPBar:Show()
 		self.Spark:Show()
 		self.Spark2:Show()
@@ -720,9 +720,6 @@ function FuXP:OnTextUpdate()
 	self:OnDataUpdate()
 	self:Reanchor()
 
-	local max, xp = UnitXPMax("player"), UnitXP("player")
-	local toGo = max - xp
-
 	-- Setup watched factions
 
 	if factionID ~= 0 then			-- 'Unknown' usually means that the player just started their character and aren't tracking any faction
@@ -787,6 +784,9 @@ function FuXP:OnTextUpdate()
 		end
 		
 		if UnitLevel("player") ~= MAX_PLAYER_LEVEL then
+			local max, xp = UnitXPMax("player"), UnitXP("player")
+			local toGo = max - xp
+
 			if maxRep - currentRep > 0 then
 				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s) // XP: %3.0f%%/%s to go"], name, ((currentRep - minRep) / (maxRep - minRep)) * 100, numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
 			else
