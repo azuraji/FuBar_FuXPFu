@@ -586,8 +586,9 @@ function FuXP:Reanchor()
 end
 
 function FuXP:ShowBar()
-	self:HideBar()	
-	if self.db.profile.ShowXP == true and not UnitLevel("player") == MAX_PLAYER_LEVEL then
+	self:HideBar()
+
+	if self.db.profile.ShowXP == true and UnitLevel("player") ~= MAX_PLAYER_LEVEL then
 		self.XPBar:Show()
 		self.Spark:Show()
 		self.Spark2:Show()
@@ -660,7 +661,7 @@ function FuXP:OnDataUpdate()
 
 			self.RepBarTex:SetVertexColor(self.db.profile.ParagonRep[1], self.db.profile.ParagonRep[2], self.db.profile.ParagonRep[3], self.db.profile.ParagonRep[4])
 			self.RepSpark:SetVertexColor(self.db.profile.ParagonRep[1], self.db.profile.ParagonRep[2], self.db.profile.ParagonRep[3], self.db.profile.Spark)
-		elseif friendshipReputationInfo.friendshipFactionID == factionID then		--Friendship
+		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then		--Friendship
 			minRep = 0
 			maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 			currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
@@ -753,7 +754,7 @@ function FuXP:OnTextUpdate()
 			currentRep = currentRepParagon % maxRepParagon
 
 			factionStandingLabel = "|cffB2D7F7Paragon"
-		elseif friendshipReputationInfo.friendshipFactionID == factionID then	--Friendship
+		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then	--Friendship
 			minRep = 0
 			maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 			currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
@@ -876,7 +877,7 @@ function FuXP:OnTooltipUpdate()
 				currentRep = currentRepParagon % maxRepParagon
 
 				standing = "|cffB2D7F7Paragon|r" 																					 --Paragon
-			elseif friendshipReputationInfo.friendshipFactionID == factionID then
+			elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then
 				maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 				currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
 
