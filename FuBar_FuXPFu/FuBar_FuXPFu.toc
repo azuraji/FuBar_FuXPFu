@@ -1,10 +1,10 @@
-﻿## Interface: 100005
+﻿## Interface: 100100
 ## Title: FuBar - |cffffffffFuXP|r|cff00ff00Fu|r
 ## Title-koKR: |CFF99FF99F|CFFFFFFFFu|CFF99FF99B|CFFFFFFFFar - |cffffffffFuXP|r|cff00ff00Fu|r
 ## Notes: Lightweight XP Bar
 ## Notes-zhCN: 迷你经验条
 ## Notes-zhTW: 輕量級的經驗值條模組。
-## Version: 10.0.5.0
+## Version: 10.1.0.0
 ## Author: Wobin, azuraji
 ## eMail: wobster@gmail.com
 ## X-Credits: Bant (For the design)

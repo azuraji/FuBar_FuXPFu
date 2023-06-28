@@ -748,6 +748,13 @@ function FuXP:OnTextUpdate()
 			currentRep = renownReputationData.renownReputationEarned
 
 			factionStandingLabel = "|cff00b0bdRenown " .. renownReputationData.renownLevel
+
+			if currentRepParagon ~= nil then																		--Renown + Paragon
+				maxRep = maxRepParagon
+				currentRep = currentRepParagon % maxRepParagon
+
+				factionStandingLabel = factionStandingLabel .. "|r |cffffffff+|r |cffB2D7F7Paragon"
+			end
 		elseif currentRepParagon ~= nil then																	--Paragon
 			minRep = 0
 			maxRep = maxRepParagon
@@ -794,7 +801,11 @@ function FuXP:OnTextUpdate()
 				self:SetText(string.format(L["%s  (%s) // XP: %3.0f%%/%s to go"], name, factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
 			end
 		else
-			self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s)"], name, ((currentRep - minRep) / (maxRep - minRep)) * 100 , numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r"))
+			if currentRep == minRep and minRep == maxRep then -- Max reputation
+				self:SetText(string.format("%s  (%s)", name, factionStandingLabel .. "|r"))
+			else
+				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s)"], name, ((currentRep - minRep) / (maxRep - minRep)) * 100 , numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r"))
+			end
 		end
 	else
 		self:SetText(string.format(L["XP: %3.0f%%/%s to go"], math.floor(xp / max * 100), numWithCommas(toGo)))
@@ -871,7 +882,14 @@ function FuXP:OnTooltipUpdate()
 				maxRep = renownReputationData.renownLevelThreshold
 				currentRep = renownReputationData.renownReputationEarned
 
-				standing = "|cff00b0bdRenown " .. renownReputationData.renownLevel .. "|r" --Renown 
+				standing = "|cff00b0bdRenown " .. renownReputationData.renownLevel .. "|r" --Renown
+
+				if currentRepParagon ~= nil then																					 --Renown + Paragon
+					maxRep = maxRepParagon
+					currentRep = currentRepParagon % maxRepParagon
+
+					standing = standing .. " |cffffffff+|r |cffB2D7F7Paragon|r"
+				end
 			elseif currentRepParagon ~= nil then
 				maxRep = maxRepParagon
 				currentRep = currentRepParagon % maxRepParagon
