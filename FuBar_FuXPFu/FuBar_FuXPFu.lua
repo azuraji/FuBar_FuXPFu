@@ -652,6 +652,11 @@ function FuXP:OnDataUpdate()
 			maxRep = renownReputationData.renownLevelThreshold
 			currentRep = renownReputationData.renownReputationEarned
 
+			if currentRepParagon ~= nil then																			--Renown + Paragon
+				maxRep = maxRepParagon
+				currentRep = currentRepParagon % maxRepParagon
+			end
+
 			self.RepBarTex:SetVertexColor(self.db.profile.RenownRep[1], self.db.profile.RenownRep[2], self.db.profile.RenownRep[3], 1)
 			self.RepSpark:SetVertexColor(self.db.profile.RenownRep[1], self.db.profile.RenownRep[2], self.db.profile.RenownRep[3], self.db.profile.Spark)
 		elseif currentRepParagon ~= nil then																		--Paragon
