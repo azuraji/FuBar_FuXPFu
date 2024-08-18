@@ -1,4 +1,4 @@
-﻿## Interface: 100002
+﻿## Interface: 110002
 ## LoadOnDemand: 1
 ## Title: Lib: FuBarPlugin-3.0
 ## Notes: A library to provide a means create a FuBar-compatible plugin.

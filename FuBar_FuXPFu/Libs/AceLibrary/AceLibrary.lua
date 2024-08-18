@@ -20,7 +20,7 @@ License: LGPL v2.1
 local ACELIBRARY_MAJOR = "AceLibrary"
 local ACELIBRARY_MINOR = 90000 + tonumber(("$Revision: 1091 $"):match("(%d+)"))
 
-local _G = getfenv(0)
+local _G = _G
 local previous = _G[ACELIBRARY_MAJOR]
 if previous and not previous:IsNewVersion(ACELIBRARY_MAJOR, ACELIBRARY_MINOR) then return end
 
@@ -357,13 +357,13 @@ end
 
 local function TryToEnable(addon)
 	if DONT_ENABLE_LIBRARIES then return end
-	local isondemand = IsAddOnLoadOnDemand(addon)
+	local isondemand = C_AddOns.IsAddOnLoadOnDemand(addon)
 	if isondemand then
-		local _, _, _, enabled = GetAddOnInfo(addon)
-		EnableAddOn(addon)
-		local _, _, _, _, loadable = GetAddOnInfo(addon)
+		local _, _, _, enabled = C_AddOns.GetAddOnInfo(addon)
+		C_AddOns.EnableAddOn(addon)
+		local _, _, _, _, loadable = C_AddOns.GetAddOnInfo(addon)
 		if not loadable and not enabled then
-			DisableAddOn(addon)
+			C_AddOns.DisableAddOn(addon)
 		end
 
 		return loadable
@@ -381,7 +381,7 @@ local function TryToLoadStandalone(major)
 
 	AceLibrary.scannedlibs[major] = true
 
-	local name, _, _, enabled, loadable = GetAddOnInfo(major)
+	local name, _, _, enabled, loadable = C_AddOns.GetAddOnInfo(major)
 	
 	loadable = (enabled and loadable) or TryToEnable(name)
 	
@@ -392,9 +392,9 @@ local function TryToLoadStandalone(major)
 	end
 	
 	local field = "X-AceLibrary-" .. major 
-	for i = 1, GetNumAddOns() do
-		if GetAddOnMetadata(i, field) then
-			name, _, _, enabled, loadable = GetAddOnInfo(i)
+	for i = 1, C_AddOns.GetNumAddOns() do
+		if C_AddOns.GetAddOnMetadata(i, field) then
+			name, _, _, enabled, loadable = C_AddOns.GetAddOnInfo(i)
 			
 			loadable = (enabled and loadable) or TryToEnable(name)
 			if loadable then
@@ -478,11 +478,13 @@ end
 -- @return      The library with the given major/minor version.
 function AceLibrary:GetInstance(major, minor)
 	argCheck(self, major, 2, "string")
+
 	if minor ~= false then
 		TryToLoadStandalone(major)
 	end
 
 	local data, ver = LibStub:GetLibrary(major, true)
+
 	if not data then
 		if self.libs[major] then
 			data, ver = self.libs[major].instance, self.libs[major].minor
@@ -505,6 +507,7 @@ function AceLibrary:GetInstance(major, minor)
 			_G.error(("Cannot find a library instance of %s, minor version %d."):format(major, minor), 2)
 		end
 	end
+	--print(major, data)
 	return data
 end
 

@@ -1,4 +1,4 @@
-## Interface: 100002
+## Interface: 110002
 ## Title: Broker2FuBar
 ## Notes: Shows your LDB sources in FuBar.
 ## Author: Kemayo, Adirelle, Arrowmaster

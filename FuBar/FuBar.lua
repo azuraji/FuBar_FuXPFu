@@ -1025,7 +1025,7 @@ function FuBar:OnEnable()
 	
 	self:AddEventListener("CVAR_UPDATE", "OnCVarUpdate")
 	
-	DisableAddOn("FuBar-compat-1.2")
+	C_AddOns.DisableAddOn("FuBar-compat-1.2")
 	
 	self:AddSecureHook("RestartGx")
 	
@@ -1069,18 +1069,18 @@ local function findFuBarDep(...)
 end
 
 local function isFuBarDependent(name)
-	local data = GetAddOnMetadata(name, "X-FuBar-Dependent")
+	local data = C_AddOns.GetAddOnMetadata(name, "X-FuBar-Dependent")
 	data = tonumber(data) or data
 	if data and data ~= 0 then
 		return true
 	end
-	return findFuBarDep(GetAddOnDependencies(name))
+	return findFuBarDep(C_AddOns.GetAddOnDependencies(name))
 end
 
 function FuBar:LoadLoadOnDemandPlugins()
-	for i = 1, GetNumAddOns() do
-		local name, _, notes, enabled, loadable = GetAddOnInfo(i)
-		if IsAddOnLoadOnDemand(i) and enabled and loadable and not IsAddOnLoaded(i) then
+	for i = 1, C_AddOns.GetNumAddOns() do
+		local name, _, notes, enabled, loadable = C_AddOns.GetAddOnInfo(i)
+		if C_AddOns.IsAddOnLoadOnDemand(i) and enabled and loadable and not C_AddOns.IsAddOnLoaded(i) then
 			if isFuBarDependent(name) then
 				if not self.db.profile.loadOnDemand[name] then
 					self:LoadPlugin(name)
@@ -1553,10 +1553,10 @@ function FuBar:OnProfileEnable(oldName, _, copyFrom)
 
 	self:CheckResolution()
 
-	for i = 1, GetNumAddOns() do
-		local name, _, notes, enabled, loadable = GetAddOnInfo(i)
-		if IsAddOnLoadOnDemand(i) and enabled and loadable and not IsAddOnLoaded(i) then
-			if findFuBarDep(GetAddOnDependencies(name)) then
+	for i = 1, C_AddOns.GetNumAddOns() do
+		local name, _, notes, enabled, loadable = C_AddOns.GetAddOnInfo(i)
+		if C_AddOns.IsAddOnLoadOnDemand(i) and enabled and loadable and not C_AddOns.IsAddOnLoaded(i) then
+			if findFuBarDep(C_AddOns.GetAddOnDependencies(name)) then
 				if not self.db.profile.loadOnDemand[name] then
 					self:LoadPlugin(name)
 				elseif not self.db.profile.loadOnDemand[name].disabled and (not self.db.profile.loadOnDemand[name].condition or CheckLoadCondition(self.db.profile.loadOnDemand[name].condition)) then

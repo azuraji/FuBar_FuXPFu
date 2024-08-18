@@ -1240,7 +1240,7 @@ function FuBarPlugin:SetFontSize(size)
 end
 
 local function IsLoadOnDemand(plugin)
-	return IsAddOnLoadOnDemand(folderNames[plugin] or "")
+	return C_AddOns.IsAddOnLoadOnDemand(folderNames[plugin] or "")
 end
 
 -- #NODOC
@@ -1256,8 +1256,8 @@ function FuBarPlugin:Embed(target)
 		local partFolder = stack:match("...([^/]+)/")
 		if partFolder then
 			local partFolder_len = #partFolder
-			for i = 1, GetNumAddOns() do
-				local name = GetAddOnInfo(i)
+			for i = 1, C_AddOns.GetNumAddOns() do
+				local name = C_AddOns.GetAddOnInfo(i)
 				if #name >= partFolder_len then
 					local partName = name:sub(-partFolder_len)
 					if partName == partFolder then

@@ -560,10 +560,10 @@ function AceAddon:InitializeAddon(addon, name)
 	if addon.name == nil then
 		addon.name = name
 	end
-	if GetAddOnMetadata then
+	if C_AddOns.GetAddOnMetadata then
 		-- TOC checks
 		if addon.title == nil then
-			addon.title = GetAddOnMetadata(name, "Title")
+			addon.title = C_AddOns.GetAddOnMetadata(name, "Title")
 		end
 		if type(addon.title) == "string" then
 			local num = addon.title:find(" |cff7fff7f %-Ace2%-|r$")
@@ -573,13 +573,13 @@ function AceAddon:InitializeAddon(addon, name)
 			addon.title = addon.title:trim()
 		end
 		if addon.notes == nil then
-			addon.notes = GetAddOnMetadata(name, "Notes")
+			addon.notes = C_AddOns.GetAddOnMetadata(name, "Notes")
 		end
 		if type(addon.notes) == "string" then
 			addon.notes = addon.notes:trim()
 		end
 		if addon.version == nil then
-			addon.version = GetAddOnMetadata(name, "Version")
+			addon.version = C_AddOns.GetAddOnMetadata(name, "Version")
 		end
 		if type(addon.version) == "string" then
 			if addon.version:find("%$Revision: (%d+) %$") then
@@ -592,25 +592,25 @@ function AceAddon:InitializeAddon(addon, name)
 			addon.version = addon.version:trim()
 		end
 		if addon.author == nil then
-			addon.author = GetAddOnMetadata(name, "Author")
+			addon.author = C_AddOns.GetAddOnMetadata(name, "Author")
 		end
 		if type(addon.author) == "string" then
 			addon.author = addon.author:trim()
 		end
 		if addon.credits == nil then
-			addon.credits = GetAddOnMetadata(name, "X-Credits")
+			addon.credits = C_AddOns.GetAddOnMetadata(name, "X-Credits")
 		end
 		if type(addon.credits) == "string" then
 			addon.credits = addon.credits:trim()
 		end
 		if addon.donate == nil then
-			addon.donate = GetAddOnMetadata(name, "X-Donate")
+			addon.donate = C_AddOns.GetAddOnMetadata(name, "X-Donate")
 		end
 		if type(addon.donate) == "string" then
 			addon.donate = addon.donate:trim()
 		end
 		if addon.date == nil then
-			addon.date = GetAddOnMetadata(name, "X-Date") or GetAddOnMetadata(name, "X-ReleaseDate")
+			addon.date = C_AddOns.GetAddOnMetadata(name, "X-Date") or C_AddOns.GetAddOnMetadata(name, "X-ReleaseDate")
 		end
 		if type(addon.date) == "string" then
 			if addon.date:find("%$Date: (.-) %$") then
@@ -622,25 +622,25 @@ function AceAddon:InitializeAddon(addon, name)
 		end
 
 		if addon.category == nil then
-			addon.category = GetAddOnMetadata(name, "X-Category")
+			addon.category = C_AddOns.GetAddOnMetadata(name, "X-Category")
 		end
 		if type(addon.category) == "string" then
 			addon.category = addon.category:trim()
 		end
 		if addon.email == nil then
-			addon.email = GetAddOnMetadata(name, "X-eMail") or GetAddOnMetadata(name, "X-Email")
+			addon.email = C_AddOns.GetAddOnMetadata(name, "X-eMail") or C_AddOns.GetAddOnMetadata(name, "X-Email")
 		end
 		if type(addon.email) == "string" then
 			addon.email = addon.email:trim()
 		end
 		if addon.license == nil then
-			addon.license = GetAddOnMetadata(name, "X-License")
+			addon.license = C_AddOns.GetAddOnMetadata(name, "X-License")
 		end
 		if type(addon.license) == "string" then
 			addon.license = addon.license:trim()
 		end
 		if addon.website == nil then
-			addon.website = GetAddOnMetadata(name, "X-Website")
+			addon.website = C_AddOns.GetAddOnMetadata(name, "X-Website")
 		end
 		if type(addon.website) == "string" then
 			addon.website = addon.website:trim()
@@ -1000,8 +1000,8 @@ function AceAddon.prototype:init()
 
 	AceAddon:RegisterEvent("ADDON_LOADED", "ADDON_LOADED")
 	local names = {}
-	for i = 1, GetNumAddOns() do
-		if IsAddOnLoaded(i) then names[GetAddOnInfo(i)] = true end
+	for i = 1, C_AddOns.GetNumAddOns() do
+		if C_AddOns.IsAddOnLoaded(i) then names[C_AddOns.GetAddOnInfo(i)] = true end
 	end
 	self.possibleNames = names
 	table.insert(AceAddon.nextAddon, self)
@@ -1087,7 +1087,7 @@ local function external(self, major, instance)
 		AceConsole = instance
 
 		local slashCommands = { "/ace2" }
-		local _,_,_,enabled,loadable = GetAddOnInfo("Ace")
+		local _,_,_,enabled,loadable = C_AddOns.GetAddOnInfo("Ace")
 		if not enabled or not loadable then
 			table.insert(slashCommands, "/ace")
 		end
@@ -1119,15 +1119,15 @@ local function external(self, major, instance)
 		end
 
 		local function listNormalAddon(i)
-			local name,_,_,loadable = GetAddOnInfo(i)
+			local name,_,_,loadable = C_AddOns.GetAddOnInfo(i)
 			-- local enableState = GetAddOnEnableState(nil, i)
       -- local enabled = enableState == 1 or enableState == 2
       local enabled = loadable
 			if self.addons[name] then
 				listAddon(self.addons[name])
 			else
-				local s = " - " .. tostring(GetAddOnMetadata(i, "Title") or name)
-				local version = GetAddOnMetadata(i, "Version")
+				local s = " - " .. tostring(C_AddOns.GetAddOnMetadata(i, "Title") or name)
+				local version = C_AddOns.GetAddOnMetadata(i, "Version")
 				if version then
 					if version:find("%$Revision: (%d+) %$") then
 						version = version:gsub("%$Revision: (%d+) %$", "%1")
@@ -1141,7 +1141,7 @@ local function external(self, major, instance)
 				if not enabled then
 					s = s .. " |cffff0000(disabled)|r"
 				end
-				if IsAddOnLoadOnDemand(i) then
+				if C_AddOns.IsAddOnLoadOnDemand(i) then
 					s = s .. " |cff00ff00[LoD]|r"
 				end
 				print(s)
@@ -1189,8 +1189,8 @@ local function external(self, major, instance)
 							name = "All",
 							type = "execute",
 							func = function()
-								print("|cffffff7fAddonYY list:|r")
-								local count = GetNumAddOns()
+								print("|cffffff7fAddon list:|r")
+								local count = C_AddOns.AddOns()
 								for i = 1, count do
 									listNormalAddon(i)
 								end
@@ -1202,9 +1202,9 @@ local function external(self, major, instance)
 							type = "execute",
 							func = function()
 								print("|cffffff7fAddon list:|r")
-								local count = GetNumAddOns()
+								local count = C_AddOns.GetNumAddOns()
 								for i = 1, count do
-									local _,_,_,loadable = GetAddOnInfo(i)
+									local _,_,_,loadable = C_AddOns.GetAddOnInfo(i)
 									if loadable then
 										listNormalAddon(i)
 									end
@@ -1217,9 +1217,9 @@ local function external(self, major, instance)
 							type = "execute",
 							func = function()
 								print("|cffffff7fAddon list:|r")
-								local count = GetNumAddOns()
+								local count = C_AddOns.GetNumAddOns()
 								for i = 1, count do
-									local _,_,_,loadable = GetAddOnInfo(i)
+									local _,_,_,loadable = C_AddOns.GetAddOnInfo(i)
 									if not loadable then
 										listNormalAddon(i)
 									end
@@ -1232,9 +1232,9 @@ local function external(self, major, instance)
 							type = "execute",
 							func = function()
 								print("|cffffff7fAddon list:|r")
-								local count = GetNumAddOns()
+								local count = C_AddOns.GetNumAddOns()
 								for i = 1, count do
-									if IsAddOnLoadOnDemand(i) then
+									if C_AddOns.IsAddOnLoadOnDemand(i) then
 										listNormalAddon(i)
 									end
 								end
@@ -1246,9 +1246,9 @@ local function external(self, major, instance)
 							type = "execute",
 							func = function()
 								print("|cffffff7fAddon list:|r")
-								local count = GetNumAddOns()
+								local count = C_AddOns.GetNumAddOns()
 								for i = 1, count do
-									local dep1, dep2, dep3, dep4 = GetAddOnDependencies(i)
+									local dep1, dep2, dep3, dep4 = C_AddOns.GetAddOnDependencies(i)
 									if dep1 == "Ace" or dep2 == "Ace" or dep3 == "Ace" or dep4 == "Ace" then
 										listNormalAddon(i)
 									end
@@ -1289,9 +1289,9 @@ local function external(self, major, instance)
 								for i,v in ipairs(arg) do
 									arg[i] = v:gsub('%*', '.*'):gsub('%%', '%%%%'):lower()
 								end
-								local count = GetNumAddOns()
+								local count = C_AddOns.GetNumAddOns()
 								for i = 1, count do
-									local name = GetAddOnInfo(i)
+									local name = C_AddOns.GetAddOnInfo(i)
 									local good = true
 									for _,v in ipairs(arg) do
 										if not name:lower():find(v) then
@@ -1317,15 +1317,19 @@ local function external(self, major, instance)
 					set = function(...)
 						for i = 1, select("#", ...) do
 							local addon = select(i, ...)
-							local name, title, _, enabled, _, reason = GetAddOnInfo(addon)
+							local name, title, _, loadable, reason = C_AddOns.GetAddOnInfo(addon)
+			        local enableState = C_AddOns.GetAddOnEnableState(nil, addon)
+
 							if reason == "MISSING" then
 								print(("|cffffff7fAce2:|r AddOn %q does not exist."):format(addon))
-							elseif not enabled then
-								EnableAddOn(addon)
-								print(("|cffffff7fAce2:|r %s is now enabled."):format(addon or name))
-							else
-								print(("|cffffff7fAce2:|r %s is already enabled."):format(addon or name))
-							end
+              elseif loadable then
+                if enableState == 0 then
+                  EnableAddOn(addon)
+                  print(("|cffffff7fAce2:|r %s is now enabled."):format(addon or name))
+                else
+								  print(("|cffffff7fAce2:|r %s is already enabled."):format(addon or name))
+                end
+              end
 						end
 					end,
 				},
@@ -1339,15 +1343,20 @@ local function external(self, major, instance)
 					set = function(...)
 						for i = 1, select("#", ...) do
 							local addon = select(i, ...)
-							local name, title, _, enabled, _, reason = GetAddOnInfo(addon)
+
+              local name, title, _, loadable, reason = C_AddOns.GetAddOnInfo(addon)
+			        local enableState = C_AddOns.GetAddOnEnableState(nil, addon)
+
 							if reason == "MISSING" then
-							print(("|cffffff7fAce2:|r AddOn %q does not exist."):format(addon))
-							elseif enabled then
-								DisableAddOn(addon)
-								print(("|cffffff7fAce2:|r %s is now disabled."):format(addon or name))
-							else
-								print(("|cffffff7fAce2:|r %s is already disabled."):format(addon or name))
-							end
+								print(("|cffffff7fAce2:|r AddOn %q does not exist."):format(addon))
+              elseif loadable then
+                if enableState == 1 or enableState == 2 then
+                  DisableAddOn(addon)
+                  print(("|cffffff7fAce2:|r %s is now disabled."):format(addon or name))
+                else
+								  print(("|cffffff7fAce2:|r %s is already disabled."):format(addon or name))
+                end
+              end
 						end
 					end,
 				},
@@ -1361,7 +1370,7 @@ local function external(self, major, instance)
 					set = function(...)
 						for i = 1, select("#", ...) do
 							local addon = select(i, ...)
-							local name, title, _, _, loadable, reason = GetAddOnInfo(addon)
+							local name, title, _, loadable, reason = C_AddOns.GetAddOnInfo(addon)
 							if reason == "MISSING" then
 								print(("|cffffff7fAce2:|r AddOn %q does not exist."):format(addon))
 							elseif not loadable then
@@ -1389,22 +1398,24 @@ local function external(self, major, instance)
 						print((" - |cffffff7fLatency [|r%.0f ms|cffffff7f]|r"):format(latency))
 						print((" - |cffffff7fBandwidth in [|r%.0f B/s|cffffff7f]|r"):format(bandwidthIn))
 						print((" - |cffffff7fBandwidth out [|r%.0f B/s|cffffff7f]|r"):format(bandwidthOut))
-						print((" - |cffffff7fTotal addons [|r%d|cffffff7f]|r"):format(GetNumAddOns()))
+						print((" - |cffffff7fTotal addons [|r%d|cffffff7f]|r"):format(C_AddOns.GetNumAddOns()))
 						print((" - |cffffff7fAce2 addons [|r%d|cffffff7f]|r"):format(#self.addons))
 						local ace = 0
 						local enabled = 0
 						local disabled = 0
 						local lod = 0
-						for i = 1, GetNumAddOns() do
-							local dep1, dep2, dep3, dep4 = GetAddOnDependencies(i)
+						for i = 1, C_AddOns.GetNumAddOns() do
+							local dep1, dep2, dep3, dep4 = C_AddOns.GetAddOnDependencies(i)
 							if dep1 == "Ace" or dep2 == "Ace" or dep3 == "Ace" or dep4 == "Ace" then
 								ace = ace + 1
 							end
-							if IsAddOnLoadOnDemand(i) then
+							if C_AddOns.IsAddOnLoadOnDemand(i) then
 								lod = lod + 1
 							end
-							local isActive, loadable = select(4, GetAddOnInfo(i))
-							if not isActive or not loadable then
+              local loadable = select(4, C_AddOns.GetAddOnInfo(i))
+			        local enableState = C_AddOns.GetAddOnEnableState(nil, i)
+
+							if not loadable or enableState == 0 then
 								disabled = disabled + 1
 							else
 								enabled = enabled + 1

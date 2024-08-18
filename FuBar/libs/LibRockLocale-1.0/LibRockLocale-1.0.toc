@@ -1,4 +1,4 @@
-﻿## Interface: 100002
+﻿## Interface: 110002
 ## X-Curse-Packaged-Version: r237
 ## X-Curse-Project-Name: LibRockLocale-1.0
 ## X-Curse-Project-ID: librocklocale-1-0

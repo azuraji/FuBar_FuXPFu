@@ -1,4 +1,4 @@
-﻿## Interface: 100002
+﻿## Interface: 110002
 ## Title: FuBar 4.0
 ## Notes: A panel that modules can plug into.
 ## Notes-ruRU: Панели для отображения различных плагинов.

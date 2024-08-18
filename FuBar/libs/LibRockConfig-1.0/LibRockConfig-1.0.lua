@@ -642,7 +642,7 @@ local GRAY_FONT_COLOR = _G.GRAY_FONT_COLOR
 local HIGHLIGHT_FONT_COLOR = _G.HIGHLIGHT_FONT_COLOR
 local NORMAL_FONT_COLOR = _G.NORMAL_FONT_COLOR
 local SetDesaturation = _G.SetDesaturation
-local GetMouseFocus = _G.GetMouseFocus
+local GetMouseFoci = _G.GetMouseFoci
 
 local newList, newDict, newSet, del, unpackListAndDel = Rock:GetRecyclingFunctions(MAJOR_VERSION, "newList", "newDict", "newSet", "del", "unpackListAndDel")
 
@@ -2582,7 +2582,7 @@ function createBase()
 	local hasEntered = false
 	local isDragging = false
 	local function inFocus()
-		local frame = GetMouseFocus()
+		local frame = GetMouseFoci()[1]
 		if frame == WorldFrame or frame == UIParent or not frame or frame == base then
 			return true
 		end
@@ -3610,7 +3610,7 @@ do
 		end
 
 		selectedTreeLine = this
-		if GetMouseFocus() == this then
+		if GetMouseFoci()[1] == this then
 			this.highlight:SetAlpha(1)
 		else
 			this.highlight:SetAlpha(0.7)

@@ -901,7 +901,7 @@ function FuBarPlugin:IsLoadOnDemand()
 	if not addon then
 		return
 	end
-	return IsAddOnLoadOnDemand(addon)
+	return C_AddOns.IsAddOnLoadOnDemand(addon)
 end
 
 function FuBarPlugin:IsDisabled()

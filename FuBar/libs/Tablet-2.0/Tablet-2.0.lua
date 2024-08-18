@@ -2510,7 +2510,7 @@ function Tablet:Open(fakeParent, parent)
 		detachedData.detached = false
 		frame:Detach()
 	end
-	if (not detachedData or not detachedData.detached) and GetMouseFocus() == fakeParent then
+	if (not detachedData or not detachedData.detached) and GetMouseFoci()[1] == fakeParent then
 		self.tooltip.enteredFrame = true
 	end
 	overFrame = type(fakeParent) == "table" and MouseIsOver(fakeParent) and fakeParent
@@ -2583,7 +2583,7 @@ function Tablet:Register(parent, ...)
 		end
 	end
 	self.onceRegistered[parent] = true
-	if GetMouseFocus() == parent then
+	if GetMouseFoci()[1] == parent then
 		self:Open(parent)
 	end
 end

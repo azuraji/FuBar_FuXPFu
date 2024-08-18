@@ -98,17 +98,17 @@ function FuXP:UpdateFactionMenu()
 
 	if queryFactions then
 		local factionTable = {}
-		local watchedFactionID = select(6, GetWatchedFactionInfo())
+		local watchedFactionID = C_Reputation.GetWatchedFactionData().factionID
 
-		for factionIndex = 1, GetNumFactions() do
-			local name, _, _, _, _, _, _, _, isHeader, _, hasRep, _, _, factionID  = GetFactionInfo(factionIndex)
+		for factionIndex = 1, C_Reputation.GetNumFactions() do
+			local factionData = C_Reputation.GetFactionDataByIndex(factionIndex)
 
-			if not isHeader or hasRep then
-				if watchedFactionID == factionID then
+			if not factionData.isHeader or factionData.isHeaderWithRep then
+				if watchedFactionID == factionData.factionID then
 					watchedFactionIndex = tostring(factionIndex)
 				end
 
-				factionTable[tostring(factionIndex)] = name
+				factionTable[tostring(factionIndex)] = factionData.name
 			end
 		end
 
@@ -132,7 +132,7 @@ function FuXP:SetupMenu()
 								return watchedFactionIndex
 							end,
 				set = function(v)
-								SetWatchedFactionIndex(tonumber(v));
+								C_Reputation.SetWatchedFactionByIndex(tonumber(v));
 							end,
 				validate = {},
 				order = 120,
@@ -405,7 +405,7 @@ function FuXP:OnEnable()
 	self:RegisterEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "OnTextUpdate")
 	self:RegisterEvent("UPDATE_FACTION", "OnUpdateFaction")
 	
-	self:SecureHook("SetWatchedFactionIndex");
+	self:SecureHook(C_Reputation, "SetWatchedFactionByIndex");
 	self:ScheduleRepeatingEvent("XPFuBar", self.Reanchor, 1, self)
 
 	self:SetupMenu()
@@ -416,7 +416,7 @@ function FuXP:OnUpdateFaction()
 	self:OnTextUpdate()
 end
 
-function FuXP:SetWatchedFactionIndex(index)
+function FuXP:SetWatchedFactionByIndex(index)
 	queryFactions = false
 	if not index then index = 0 end
 
@@ -641,11 +641,14 @@ function FuXP:OnDataUpdate()
 	local total = self.Panel.frame:GetWidth()
 
 	if self.db.profile.ShowRep == true and watchedFactionID ~= 0 then
-		local name, standing, minRep, maxRep, currentRep, factionID = GetWatchedFactionInfo()
+		local watchedFactionData = C_Reputation.GetWatchedFactionData()
+		local minRep = watchedFactionData.currentReactionThreshold
+		local maxRep = watchedFactionData.nextReactionThreshold
+		local currentRep = watchedFactionData.reaction
 		
-		local renownReputationData = C_MajorFactions.GetMajorFactionData(factionID)
-		local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(factionID)
-		local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(factionID)
+		local renownReputationData = C_MajorFactions.GetMajorFactionData(watchedFactionData.factionID)
+		local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(watchedFactionData.factionID)
+		local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(watchedFactionData.factionID)
 
 		if renownReputationData ~= nil then																			--Renown
 			minRep = 0
@@ -666,7 +669,7 @@ function FuXP:OnDataUpdate()
 
 			self.RepBarTex:SetVertexColor(self.db.profile.ParagonRep[1], self.db.profile.ParagonRep[2], self.db.profile.ParagonRep[3], self.db.profile.ParagonRep[4])
 			self.RepSpark:SetVertexColor(self.db.profile.ParagonRep[1], self.db.profile.ParagonRep[2], self.db.profile.ParagonRep[3], self.db.profile.Spark)
-		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then		--Friendship
+		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == watchedFactionData.factionID then		--Friendship
 			minRep = 0
 			maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 			currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
@@ -719,33 +722,37 @@ local function numWithCommas(n)
 end
 
 function FuXP:OnTextUpdate()
-	local name, standing, minRep, maxRep, currentRep, factionID = GetWatchedFactionInfo()
+	local watchedFactionData = C_Reputation.GetWatchedFactionData()
 	
-	watchedFactionID = factionID
+	watchedFactionID = watchedFactionData and watchedFactionData.factionID or 0
 	
 	self:OnDataUpdate()
 	self:Reanchor()
 
 	-- Setup watched factions
 
-	if factionID ~= 0 then			-- 'Unknown' usually means that the player just started their character and aren't tracking any faction
+	if watchedFactionData then			-- nil usually means that the player just started their character and aren't tracking any faction
+		local minRep = watchedFactionData.currentReactionThreshold
+		local maxRep = watchedFactionData.nextReactionThreshold
+		local currentRep = watchedFactionData.currentStanding
+
 		-- Renown Reputation introduced in Dragonflight:
 		-- https://wowpedia.fandom.com/wiki/API_C_MajorFactions.GetMajorFactionData
 		
-		local renownReputationData = C_MajorFactions.GetMajorFactionData(factionID)
+		local renownReputationData = C_MajorFactions.GetMajorFactionData(watchedFactionData.factionID)
 
 		-- Paragon Reputation introduced in Legion:
 		-- https://wow.gamepedia.com/Reputation#Paragon
 		-- https://wow.gamepedia.com/API_C_Reputation.GetFactionParagonInfo
 
-		local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(factionID)
+		local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(watchedFactionData.factionID)
 		
 		-- Friendship Reputation introduced in Mists of Pandaria:
 		-- https://wowpedia.fandom.com/wiki/API_C_GossipInfo.GetFriendshipReputation
 
-		local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(factionID)
+		local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(watchedFactionData.factionID)
 		
-		local factionStandingLabel = _G["FACTION_STANDING_LABEL" .. standing]
+		local factionStandingLabel = _G["FACTION_STANDING_LABEL" .. watchedFactionData.reaction]
 
 		if renownReputationData ~= nil then																		--Renown
 			minRep = 0
@@ -766,7 +773,7 @@ function FuXP:OnTextUpdate()
 			currentRep = currentRepParagon % maxRepParagon
 
 			factionStandingLabel = "|cffB2D7F7Paragon"
-		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then	--Friendship
+		elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == watchedFactionData.factionID then	--Friendship
 			minRep = 0
 			maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 			currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
@@ -775,21 +782,21 @@ function FuXP:OnTextUpdate()
 		else
 			local standingColor
 
-			if standing == 1 then
+			if watchedFactionData.reaction == 1 then
 				standingColor = "|cffcc2222" --Hated
-			elseif standing == 2 then
+			elseif watchedFactionData.reaction == 2 then
 				standingColor = "|cffff0000" --Hostile
-			elseif standing == 3 then
+			elseif watchedFactionData.reaction == 3 then
 				standingColor = "|cffee6622" --Unfriendly
-			elseif standing == 4 then
+			elseif watchedFactionData.reaction == 4 then
 				standingColor = "|cffD1BB48" --Neutral
-			elseif standing == 5 then
+			elseif watchedFactionData.reaction == 5 then
 				standingColor = "|cff00ff00" --Friendly
-			elseif standing == 6 then
+			elseif watchedFactionData.reaction == 6 then
 				standingColor = "|cff00ff88" --Honored
-			elseif standing == 7 then
+			elseif watchedFactionData.reaction == 7 then
 				standingColor = "|cff00ffcc" --Revered
-			elseif standing == 8 then
+			elseif watchedFactionData.reaction == 8 then
 				standingColor = "|cff00ffff" --Exalted
 			end
 
@@ -801,15 +808,15 @@ function FuXP:OnTextUpdate()
 			local toGo = max - xp
 
 			if maxRep - currentRep > 0 then
-				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s) // XP: %3.0f%%/%s to go"], name, ((currentRep - minRep) / (maxRep - minRep)) * 100, numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
+				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s) // XP: %3.0f%%/%s to go"], watchedFactionData.name, ((currentRep - minRep) / (maxRep - minRep)) * 100, numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
 			else
-				self:SetText(string.format(L["%s  (%s) // XP: %3.0f%%/%s to go"], name, factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
+				self:SetText(string.format(L["%s  (%s) // XP: %3.0f%%/%s to go"], watchedFactionData.name, factionStandingLabel .. "|r", math.floor(xp / max * 100), numWithCommas(toGo)))
 			end
 		else
 			if currentRep == minRep and minRep == maxRep then -- Max reputation
-				self:SetText(string.format("%s  (%s)", name, factionStandingLabel .. "|r"))
+				self:SetText(string.format("%s  (%s)", watchedFactionData.name, factionStandingLabel .. "|r"))
 			else
-				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s)"], name, ((currentRep - minRep) / (maxRep - minRep)) * 100 , numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r"))
+				self:SetText(string.format(L["%s: %3.0f%% (%s/%s)  (%s)"], watchedFactionData.name, ((currentRep - minRep) / (maxRep - minRep)) * 100 , numWithCommas(currentRep - minRep), numWithCommas(maxRep - minRep), factionStandingLabel .. "|r"))
 			end
 		end
 	else
@@ -843,7 +850,7 @@ function FuXP:OnTooltipUpdate()
 				xpExPercent = "|cff" .. crayon:GetThresholdHexColor(xpExPercent, 1, 25, 50, 75, 100) .. xpExPercent .. "|r"
 			end
 			if GetXPExhaustion() - toLevelXP > 0 then
-				xpExPercent = "100% + " .. xpExPercent
+				xpExPercent = "100 + " .. xpExPercent
 			end
 			
 		end
@@ -872,16 +879,20 @@ function FuXP:OnTooltipUpdate()
 	end
 
 	if self.db.profile.ShowRep == true then
-		local _, standing, _, _, _, factionID = GetWatchedFactionInfo()
+		local watchedFactionData = C_Reputation.GetWatchedFactionData()
 		
-		if standing > 0 then 		-- 'Unknown' usually means that the player just started their character and aren't tracking any faction
-			local name, _, _, minRep, maxRep, currentRep = GetFactionInfoByID(factionID)
+		if watchedFactionData then 		-- nil usually means that the player just started their character and aren't tracking any faction
+			local factionData = C_Reputation.GetFactionDataByID(watchedFactionData.factionID)
+			local standing
+			local minRep = factionData.currentReactionThreshold
+			local maxRep = factionData.nextReactionThreshold
+			local currentRep = factionData.currentStanding
 
 			local standingColor
 
-			local renownReputationData = C_MajorFactions.GetMajorFactionData(factionID)
-			local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(factionID)
-			local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(factionID)
+			local renownReputationData = C_MajorFactions.GetMajorFactionData(watchedFactionData.factionID)
+			local currentRepParagon, maxRepParagon = C_Reputation.GetFactionParagonInfo(watchedFactionData.factionID)
+			local friendshipReputationInfo = C_GossipInfo.GetFriendshipReputation(watchedFactionData.factionID)
 
 			if renownReputationData ~= nil then
 				maxRep = renownReputationData.renownLevelThreshold
@@ -900,36 +911,36 @@ function FuXP:OnTooltipUpdate()
 				currentRep = currentRepParagon % maxRepParagon
 
 				standing = "|cffB2D7F7Paragon|r" 																					 --Paragon
-			elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == factionID then
+			elseif friendshipReputationInfo and friendshipReputationInfo.friendshipFactionID == watchedFactionData.factionID then
 				maxRep = friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.reactionThreshold or friendshipReputationInfo.maxRep
 				currentRep = maxRep - (friendshipReputationInfo.nextThreshold and friendshipReputationInfo.nextThreshold - friendshipReputationInfo.standing or 0)
 
-				local rankInfo = C_GossipInfo.GetFriendshipReputationRanks(factionID)
+				local rankInfo = C_GossipInfo.GetFriendshipReputationRanks(watchedFactionData.factionID)
 				standing = "|cffffdea1" .. friendshipReputationInfo.reaction .. " (" .. rankInfo.currentLevel .. "/" .. rankInfo.maxLevel .. ")|r" 			 --Friendship
 			else
-				if standing == 1 then
+				if watchedFactionData.reaction == 1 then
 					standingColor = "|cffcc2222" --Hated
-				elseif standing == 2 then
+				elseif watchedFactionData.reaction == 2 then
 					standingColor = "|cffff0000" --Hostile
-				elseif standing == 3 then
+				elseif watchedFactionData.reaction == 3 then
 					standingColor = "|cffee6622" --Unfriendly
-				elseif standing == 4 then
+				elseif watchedFactionData.reaction == 4 then
 					standingColor = "|cffD1BB48" --Neutral
-				elseif standing == 5 then
+				elseif watchedFactionData.reaction == 5 then
 					standingColor = "|cff00ff00" --Friendly
-				elseif standing == 6 then
+				elseif watchedFactionData.reaction == 6 then
 					standingColor = "|cff00ff88" --Honored
-				elseif standing == 7 then
+				elseif watchedFactionData.reaction == 7 then
 					standingColor = "|cff00ffcc" --Revered
-				elseif standing == 8 then
+				elseif watchedFactionData.reaction == 8 then
 					standingColor = "|cff00ffff" --Exalted
 				end
 
-				standing = standingColor .. _G["FACTION_STANDING_LABEL" .. standing] .. "|r"
+				standing = standingColor .. _G["FACTION_STANDING_LABEL" .. watchedFactionData.reaction] .. "|r"
 			end
 
 			tablet:AddCategory(
-				'text', "|cffe3e3e3" .. name .. "|r",
+				'text', "|cffe3e3e3" .. watchedFactionData.name .. "|r",
 				'justify', 'CENTER',
 				'size', 13,
 				'hideBlankLine', not showXPBar
@@ -968,7 +979,7 @@ function FuXP:OnTooltipUpdate()
 						'wrap', true
 					)
 				end
-			elseif friendshipReputationInfo.friendshipFactionID == factionID then
+			elseif friendshipReputationInfo.friendshipFactionID == watchedFactionData.factionID then
 				local repCat3 = tablet:AddCategory()
 			
 				repCat3:AddLine(
@@ -985,7 +996,7 @@ end
 function FuXP:OnClick()
 	local renownReputationData = C_MajorFactions.GetMajorFactionData(watchedFactionID)
 	
-	if renownReputationData ~= nil and renownReputationData.isUnlocked then
+	if renownReputationData and renownReputationData.isUnlocked then
 		tablet:Close()
 
 		MajorFactions_LoadUI();

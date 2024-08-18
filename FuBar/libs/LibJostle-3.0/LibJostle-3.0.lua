@@ -24,25 +24,25 @@ local blizzardFrames = {
 	'PlayerFrame',
 	'TargetFrame',
 	'MinimapCluster',
-	'PartyMemberFrame1',
+	-- 'PartyMemberFrame1',
 	'TicketStatusFrame',
-	'WorldStateAlwaysUpFrame',
+	-- 'WorldStateAlwaysUpFrame',
 	'MainMenuBar',
 	'MultiBarRight',
-	'CT_PlayerFrame_Drag',
-	'CT_TargetFrame_Drag',
-	'Gypsy_PlayerFrameCapsule',
-	'Gypsy_TargetFrameCapsule',
-	'ConsolidatedBuffs',
+	-- 'CT_PlayerFrame_Drag',
+	-- 'CT_TargetFrame_Drag',
+	-- 'Gypsy_PlayerFrameCapsule',
+	-- 'Gypsy_TargetFrameCapsule',
+	-- 'ConsolidatedBuffs',
 	'BuffFrame',
 	-- 'DEFAULT_CHAT_FRAME',
 	-- 'ChatFrame2',
 	'GroupLootFrame1',
-	'TutorialFrameParent',
-	'FramerateLabel',
+	-- 'TutorialFrameParent',
+	-- 'FramerateLabel',
 	'DurabilityFrame',
-	'CastingBarFrame',
-	'OrderHallCommandBar',
+	-- 'CastingBarFrame',
+	-- 'OrderHallCommandBar',
 	'MicroButtonAndBagsBar',
 	'UIWidgetTopCenterContainerFrame',
 	'StatusTrackingBarManager',
@@ -364,16 +364,19 @@ function Jostle:Refresh(...)
 		end
 	end
 
-	for _,frame in ipairs(frames) do
+	for _, frame in ipairs(frames) do
 		if type(frame) == "string" then
+			-- print(frame, _G[frame])
 			frame = _G[frame]
 		end
 
 		local framescale = frame and frame.GetScale and frame:GetScale() or 1
 
-		if ((frame and frame.IsUserPlaced and not frame:IsUserPlaced()) or ((frame == DEFAULT_CHAT_FRAME or frame == ChatFrame2) and SIMPLE_CHAT == "1") or frame == FramerateLabel) and (frame ~= ChatFrame2 or SIMPLE_CHAT == "1") then
+		if ((frame.IsUserPlaced and not frame:IsUserPlaced()) or ((frame == DEFAULT_CHAT_FRAME or frame == ChatFrame2) and SIMPLE_CHAT == "1") or frame == FramerateLabel) and (frame ~= ChatFrame2 or SIMPLE_CHAT == "1") then
 			local frameData = blizzardFramesData[frame]
-			if (select(2, frame:GetPoint(1)) ~= UIParent and select(2, frame:GetPoint(1)) ~= WorldFrame) then
+			local _, relativeTo, relativePoint = frame:GetPoint(1)
+
+			if relativeTo ~= UIParent and relativeTo ~= WorldFrame then
 				-- do nothing
 			elseif frame == PlayerFrame and (CT_PlayerFrame_Drag or Gypsy_PlayerFrameCapsule) then
 				-- do nothing
@@ -383,7 +386,7 @@ function Jostle:Refresh(...)
 				-- do nothing
 			elseif frame == MainMenuBar and Gypsy_HotBarCapsule then
 				-- do nothing
-			elseif frame == MinimapCluster and select(3, frame:GetPoint(1)) ~= "TOPRIGHT" then
+			elseif frame == MinimapCluster and relativePoint ~= "TOPRIGHT" then
 				-- do nothing
 			elseif frame == DurabilityFrame and DurabilityFrame:IsShown() and (DurabilityFrame:GetLeft() > GetScreenWidth() or DurabilityFrame:GetRight() < 0 or DurabilityFrame:GetBottom() > GetScreenHeight() or DurabilityFrame:GetTop() < 0) then
 				DurabilityFrame:Hide()

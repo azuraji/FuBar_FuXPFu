@@ -2664,7 +2664,7 @@ local function activate(self, oldLib, oldDeactivate)
 	self:RegisterChatCommand("/reload", "/rl", "/reloadui", ReloadUI, "RELOAD")
 	self:RegisterChatCommand("/gm", ToggleHelpFrame, "GM")
 	local t = { "/print", "/echo" }
-	local _,_,_,enabled,loadable = GetAddOnInfo("DevTools")
+	local _,_,_,enabled,loadable = C_AddOns.GetAddOnInfo("DevTools")
 	if not enabled and not loadable then
 		table.insert(t, "/dump")
 	end

@@ -8,7 +8,7 @@ addon.registry = {}
 addon.fubared = {}
 
 function addon:OnInitialize()
-	if IsAddOnLoaded('FuBar2Broker') then
+	if C_AddOns.IsAddOnLoaded('FuBar2Broker') then
 		self:Print(self.name..' disabled itself because FuBar2Broker is loaded. Running these two addons at the same time is a very bad idea.')
 		self:SetEnabledState(false)
 		return
